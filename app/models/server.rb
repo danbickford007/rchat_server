@@ -8,10 +8,13 @@ class Server
 
   def run
     loop{
-      Thread.start(@server.accept) do |client|
-        @clients << Client.new(client)
-        welcome = Welcome.new(client)
+      Thread.start(@server.accept) do |connection|
+        client = Client.new
+        client.set_connection(connection)
+        @clients << client
+        welcome = Welcome.new(connection)
         welcome.greet
+        client.category = welcome.choose_category
         listen_for_clients
       end
     }
@@ -20,8 +23,8 @@ class Server
   def listen_for_clients
     loop{
       @clients.each do |client|
-        p '++++++++++++++++'
-        p message = client.connection.gets.chomp     
+        message = client.connection.gets.chomp     
+        client.connection.puts message
       end 
     }
   end

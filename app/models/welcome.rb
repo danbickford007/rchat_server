@@ -1,11 +1,19 @@
 class Welcome
 
-  def initialize(client)
-    @client = client
+  def initialize(connection)
+    @connection = connection
   end
 
   def greet
-    @client.puts 'Welcome ...'
+    @connection.puts 'Welcome ...'
+  end
+
+  def choose_category
+    @connection.puts 'Please choose a category...'
+    category = Category.new
+    category.set_connection @connection
+    category.show_all
+    category.get_choice
   end
 
 end

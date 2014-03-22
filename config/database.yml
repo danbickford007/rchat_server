@@ -48,7 +48,7 @@ test:
   encoding: unicode
   database: rchat_server_test
   pool: 5
-  username: rchat_server
+  username: dan
   password:
 
 production:

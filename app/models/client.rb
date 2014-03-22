@@ -1,9 +1,11 @@
-class Client
+class Client < ActiveRecord::Base
 
-  attr_accessor :connection
+  attr_accessor :connection, :category
 
-  def initialize(connection)
-    @connection = connection
+  def initialize
   end
 
+  def set_connection(connection)
+    @connection = connection
+  end
 end
