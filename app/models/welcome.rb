@@ -6,6 +6,12 @@ class Welcome
 
   def greet
     @connection.puts 'Welcome ...'
+    login
+  end
+
+  def login
+    log_in = Login.new(@connection)
+    log_in.start
   end
 
   def choose_category

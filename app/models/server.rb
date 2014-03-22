@@ -24,9 +24,15 @@ class Server
     loop{
       @clients.each do |client|
         message = client.connection.gets.chomp     
-        client.connection.puts message
+        broadcast message
       end 
     }
+  end
+
+  def broadcast message
+    @clients.each do |client|
+      client.connection.puts message
+    end
   end
 
 end

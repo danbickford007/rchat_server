@@ -20,6 +20,7 @@ describe Welcome do
 
     it 'should greet client' do
       client.should_receive(:puts)
+      welcome.stub(:login)
       welcome.greet
     end
   end
