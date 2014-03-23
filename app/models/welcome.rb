@@ -1,17 +1,18 @@
 class Welcome
 
-  def initialize(connection)
+  def initialize(connection, client)
     @connection = connection
+    @client = client
   end
 
-  def greet
+  def greet 
     @connection.puts 'Welcome ...'
-    login
+    login 
   end
 
-  def login
-    log_in = Login.new(@connection)
-    log_in.start
+  def login 
+    log_in = Login.new(@connection, @client)
+    log_in.start 
   end
 
   def choose_category

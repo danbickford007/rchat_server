@@ -9,17 +9,18 @@ describe Welcome do
   after do
       @server.close
   end
-  
-  let(:client) { TCPSocket.new('localhost', 6667) }
-  let(:welcome) { Welcome.new(client) }
+ 
+  let(:connection) { TCPSocket.new('localhost', 6667) }
+  let(:client) { Client.new() }  
+  let(:welcome) { Welcome.new(connection, client) }
 
   describe '#greet' do
     it 'client should exist' do
-      client.should_not be_nil
+      connection.should_not be_nil
     end
 
     it 'should greet client' do
-      client.should_receive(:puts)
+      connection.should_receive(:puts)
       welcome.stub(:login)
       welcome.greet
     end

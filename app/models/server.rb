@@ -12,8 +12,8 @@ class Server
         client = Client.new
         client.set_connection(connection)
         @clients << client
-        welcome = Welcome.new(connection)
-        welcome.greet
+        welcome = Welcome.new(connection, client)
+        welcome.greet 
         client.category = welcome.choose_category
         listen_for_clients
       end
@@ -24,14 +24,24 @@ class Server
     loop{
       @clients.each do |client|
         message = client.connection.gets.chomp     
-        broadcast message
+        command = Command.new(client.connection)
+        if command.is_command(message)
+          command.issue message
+        else
+          broadcast message
+        end
       end 
     }
   end
 
   def broadcast message
     @clients.each do |client|
-      client.connection.puts message
+      begin
+        client.connection.puts "#{client.email}: #{message}"
+      rescue
+        p 'REMOVING CLIENT'
+        @clients.remove(client)
+      end
     end
   end
 
