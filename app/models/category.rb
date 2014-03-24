@@ -12,7 +12,7 @@ class Category < ActiveRecord::Base
     categories.each do |cat|
       cats << "#{cat.id}: #{cat.name}"
     end
-    @connection.puts cats.join('\n')
+    @connection.puts cats.join("\n")
   end
 
   def get_choice

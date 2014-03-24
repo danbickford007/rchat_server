@@ -11,8 +11,10 @@ class Login
     @connection.puts "Enter password:"
     password = @connection.gets.chomp
     if client.password == password
+      #@client.email = client.email
+      @client = client
+      @client.connection = @connection
       @connection.puts 'successfully logged in ...'
-      @client.email = client.email
     else
       @connection.puts 'password incorrect, disconnecting...'
       @connection.close
@@ -24,7 +26,9 @@ class Login
     password = @connection.gets.chomp
     client = Client.create(email: email, password: password)
     @connection.puts 'sucessfully created account'
-    @client.email = client.email
+    @client = client
+    @client.connection = @connection
+    #@client.email = client.email
   end
 
   def create email

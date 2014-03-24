@@ -11,35 +11,39 @@ class Server
       Thread.start(@server.accept) do |connection|
         client = Client.new
         client.set_connection(connection)
-        @clients << client
         welcome = Welcome.new(connection, client)
-        welcome.greet 
+        client = welcome.greet 
+        
         client.category = welcome.choose_category
-        listen_for_clients
+        @clients << client
+        listen_for_clients client
       end
-    }
+    }.join
   end
 
-  def listen_for_clients
+  def listen_for_clients client
     loop{
-      @clients.each do |client|
-        message = client.connection.gets.chomp     
+      message = client.connection.gets.chomp    
+      if message.present? 
         command = Command.new(client.connection)
         if command.is_command(message)
           command.issue message
         else
-          broadcast message
+          broadcast message, client
         end
-      end 
+      end
     }
   end
 
-  def broadcast message
+  def broadcast message, broadcasting_client
     @clients.each do |client|
       begin
-        client.connection.puts "#{client.email}: #{message}"
+        if broadcasting_client.category == client.category
+          client.connection.puts "#{broadcasting_client.email}: #{message}"
+        end
       rescue
         p 'REMOVING CLIENT'
+        client.connection.close
         @clients.remove(client)
       end
     end

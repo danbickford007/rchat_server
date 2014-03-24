@@ -13,6 +13,7 @@ class Welcome
   def login 
     log_in = Login.new(@connection, @client)
     log_in.start 
+    log_in.client
   end
 
   def choose_category
