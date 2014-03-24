@@ -13,7 +13,6 @@ class Server
         client.set_connection(connection)
         welcome = Welcome.new(connection, client)
         client = welcome.greet 
-        
         client.category = welcome.choose_category
         @clients << client
         listen_for_clients client
@@ -27,7 +26,7 @@ class Server
       if message.present? 
         command = Command.new(client.connection)
         if command.is_command(message)
-          command.issue message
+          command.issue client, message
         else
           broadcast message, client
         end
@@ -36,6 +35,7 @@ class Server
   end
 
   def broadcast message, broadcasting_client
+    History.create(content: "#{broadcasting_client.email}: #{message}", category_id:broadcasting_client.category.id)
     @clients.each do |client|
       begin
         if broadcasting_client.category == client.category

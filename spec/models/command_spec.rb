@@ -29,8 +29,8 @@ describe Command do
   describe '#issue' do
 
     it 'should call category create when :category:test' do
-      Category.should_receive(:create)
-      command.issue(':category:')
+      Category.any_instance.should_receive(:set)
+      command.issue(client, ':category:test')
     end
 
   end

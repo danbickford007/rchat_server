@@ -5,24 +5,19 @@ class Command
   end
 
   def is_command(txt)
-    txt.match(/:{1}/) != nil
+    txt.first == ':'
   end
 
-  def issue com
+  def issue client, com
+    category = Category.new
+    category.set_connection @connection, client
     if com.match(/:category:/)
       cat = com.split(/:category:/)[1]
-      if Category.find_by_name(cat)
-
-      elsif Category.find_by_id(cat)
-
-      else
-        Category.create(name: com.split(/:category:/)[1])
-      end
+      category.set(client, cat)
     elsif com.match(/:categories:/)
-      category = Category.new
-      category.set_connection @connection
-      category.show_all
+      category.show_all client
     end
+    client
   end
 
 end

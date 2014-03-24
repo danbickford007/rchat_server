@@ -19,7 +19,7 @@ class Welcome
   def choose_category
     @connection.puts 'Please choose a category...'
     category = Category.new
-    category.set_connection @connection
+    category.set_connection @connection, @client
     category.show_all
     category.get_choice
   end
