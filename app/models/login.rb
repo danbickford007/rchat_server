@@ -8,42 +8,42 @@ class Login
   end
 
   def proceed client
-    @connection.puts "Enter password:"
+    @connection.puts ":red:Enter password:"
     password = @connection.gets.chomp
     if client.password == password
       #@client.email = client.email
       @client = client
       @client.connection = @connection
-      @connection.puts 'successfully logged in ...'
+      @connection.puts ':green:successfully logged in ...'
     else
-      @connection.puts 'password incorrect, disconnecting...'
+      @connection.puts ':red:password incorrect, disconnecting...'
       @connection.close
     end
   end
 
   def create_client email
-    @connection.puts "Please enter a password, remember this:"
+    @connection.puts ":yellow:Please enter a password, remember this:"
     password = @connection.gets.chomp
     client = Client.create(email: email, password: password)
-    @connection.puts 'sucessfully created account'
+    @connection.puts ':green:sucessfully created account'
     @client = client
     @client.connection = @connection
     #@client.email = client.email
   end
 
   def create email
-    @connection.puts "Email does not exist, do you want to create this account?(y/n)"
+    @connection.puts ":red:Email does not exist, do you want to create this account?(y/n)"
     answer = @connection.gets.chomp
     if answer == 'y'
       create_client email
     else
-      @connection.puts 'DISCONNECTING ...'
+      @connection.puts ':red:DISCONNECTING ...'
       @connection.close
     end
   end
 
   def start 
-    @connection.puts 'Enter email: '
+    @connection.puts ':yellow:Enter email: '
     email = @connection.gets.chomp
     client = Client.find_by_email(email)
     if client

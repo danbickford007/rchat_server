@@ -19,9 +19,19 @@ class Command
     elsif com.match(/:history:/)
       history = History.new
       history.client = client
-      history.show_by_category 
+      history.show_by_category
+    elsif com.match(/:help:/)
+      help client
     end
     client
+  end
+
+  def help client
+    client.connection.puts ":yellow:------------HELP---------------"
+    client.connection.puts ":yellow:To view chat categories, issue command ':categories:'"
+    client.connection.puts ":yellow:To select a category, for example a category named 'test', issue command ':category:test' or by it's identification number, ':category:1'"
+    client.connection.puts ":yellow:To view history, issue command ':history:', you will be shown a list of topics, type the identification number of the topic you wish to view history"
+
   end
 
 end

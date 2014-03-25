@@ -6,7 +6,7 @@ class Welcome
   end
 
   def greet 
-    @connection.puts 'Welcome ...'
+    @connection.puts ':blue:Welcome ...'
     login 
   end
 
@@ -17,7 +17,7 @@ class Welcome
   end
 
   def choose_category
-    @connection.puts 'Please choose a category...'
+    @connection.puts ':yellow:Please choose a category...'
     category = Category.new
     category.set_connection @connection, @client
     category.show_all

@@ -11,7 +11,7 @@ class Category < ActiveRecord::Base
     categories = Category.all
     cats = []
     categories.each do |cat|
-      cats << "#{client and client.category.id == cat.id ? '*' : ''}#{cat.id}: #{cat.name}"
+      cats << ":yellow:#{client and client.category.id == cat.id ? '*' : ''}#{cat.id}: #{cat.name}"
     end
     @connection.puts cats.join("\n")
   end
@@ -20,7 +20,7 @@ class Category < ActiveRecord::Base
     msg = @connection.gets.chomp
     cat = Category.find_by_id(msg)
     if cat
-      @connection.puts "Now in category #{cat.name}"
+      @connection.puts ":yellow:Now in category #{cat.name}"
       @client.category = cat
       last_10 @client
       cat

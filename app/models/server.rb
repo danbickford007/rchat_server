@@ -39,7 +39,7 @@ class Server
     @clients.each do |client|
       begin
         if broadcasting_client.category == client.category
-          client.connection.puts "#{broadcasting_client.email}: #{message}"
+          client.connection.puts ":blue:#{broadcasting_client.email}: #{message}"
         end
       rescue
         p 'REMOVING CLIENT'
