@@ -9,13 +9,20 @@ class Server
   def run
     loop{
       Thread.start(@server.accept) do |connection|
-        client = Client.new
-        client.set_connection(connection)
-        welcome = Welcome.new(connection, client)
-        client = welcome.greet 
-        client.category = welcome.choose_category
-        @clients << client
-        listen_for_clients client
+        begin
+          client = Client.new
+          client.set_connection(connection)
+          welcome = Welcome.new(connection, client)
+          client = welcome.greet 
+          client.category = welcome.choose_category
+          @clients << client
+          listen_for_clients client
+        rescue => e
+          p 'FAILED HERE'
+          p e
+          @clients.delete(client)
+          @clients.map{|c| @clients.delete(c) if c == nil || c == []}
+        end
       end
     }.join
   end
@@ -26,7 +33,7 @@ class Server
       if message.present? 
         command = Command.new(client.connection)
         if command.is_command(message)
-          command.issue client, message
+          @clients = command.issue client, message, @clients
         else
           broadcast message, client
         end
@@ -44,7 +51,7 @@ class Server
       rescue
         p 'REMOVING CLIENT'
         client.connection.close
-        @clients.remove(client)
+        @clients.delete(client)
       end
     end
   end

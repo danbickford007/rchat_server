@@ -8,7 +8,7 @@ class Command
     txt.first == ':'
   end
 
-  def issue client, com
+  def issue client, com, clients
     category = Category.new
     category.set_connection @connection, client
     if com.match(/:category:/)
@@ -22,8 +22,12 @@ class Command
       history.show_by_category
     elsif com.match(/:help:/)
       help client
+    elsif com.match(/:exit:/)
+      client.connection.puts "disconnecting..."
+      client.connection.close
+      clients.delete(client)
     end
-    client
+    [client, clients]
   end
 
   def help client
