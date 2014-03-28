@@ -20,6 +20,7 @@ class Server
         rescue => e
           p 'FAILED HERE'
           p e
+          p e.backtrace
           @clients.delete(client)
           @clients.map{|c| @clients.delete(c) if c == nil || c == []}
         end
@@ -50,7 +51,9 @@ class Server
         end
       rescue
         p 'REMOVING CLIENT'
-        client.connection.close
+        if client and client.method_defined?(:connection)
+          client.connection.close
+        end
         @clients.delete(client)
       end
     end
